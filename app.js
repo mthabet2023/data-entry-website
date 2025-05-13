@@ -54,8 +54,6 @@ async function handleSubmit(e) {
         // Clear form
         document.getElementById('description').value = '';
         document.getElementById('amount').value = '';
-        
-        alert('تم إضافة المصروف بنجاح');
     } catch (error) {
         console.error('Error:', error);
         alert('حدث خطأ أثناء إضافة المصروف');
@@ -88,9 +86,14 @@ async function loadExpenses() {
                 <td>${description}</td>
                 <td>${amount}</td>
                 <td>
-                    <button class="edit-btn" onclick="showEditModal('${index}', '${date}', '${description}', '${amount}')">
-                        تعديل
-                    </button>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="edit-btn" onclick="showEditModal('${index}', '${date}', '${description}', '${amount}')">
+                            تعديل
+                        </button>
+                        <button class="delete-btn" onclick="deleteExpense('${index}')">
+                            حذف
+                        </button>
+                    </div>
                 </td>
             `;
             tbody.appendChild(tr);
@@ -188,4 +191,28 @@ async function updateSheet(data) {
     }
 
     return response.json();
+}
+
+async function deleteExpense(rowIndex) {
+    if (!confirm('هل أنت متأكد من حذف هذا المصروف؟')) {
+        return;
+    }
+
+    const responsible = document.getElementById('filterResponsible').value;
+
+    try {
+        const response = await fetch(`/api/sheets?sheet=${SHEETS[responsible]}&rowIndex=${rowIndex}`, {
+            method: 'DELETE'
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to delete data');
+        }
+
+        // Reload expenses after successful deletion
+        await loadExpenses();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('حدث خطأ أثناء حذف المصروف');
+    }
 }

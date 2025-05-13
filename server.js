@@ -75,6 +75,43 @@ app.put('/api/sheets', async (req, res) => {
     }
 });
 
+app.delete('/api/sheets', async (req, res) => {
+    try {
+        const { sheet, rowIndex } = req.query;
+        
+        // Get the current values
+        const response = await sheets.spreadsheets.values.get({
+            spreadsheetId: process.env.SHEET_ID,
+            range: `${sheet}!A:C`,
+        });
+
+        const values = response.data.values || [];
+        
+        // Remove the specified row
+        values.splice(parseInt(rowIndex) + 1, 1); // +1 because of header row
+
+        // Update the sheet with the remaining values
+        await sheets.spreadsheets.values.clear({
+            spreadsheetId: process.env.SHEET_ID,
+            range: `${sheet}!A:C`,
+        });
+
+        if (values.length > 0) {
+            await sheets.spreadsheets.values.update({
+                spreadsheetId: process.env.SHEET_ID,
+                range: `${sheet}!A1`,
+                valueInputOption: 'USER_ENTERED',
+                resource: { values },
+            });
+        }
+
+        res.json({ success: true });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ error: 'Failed to delete data' });
+    }
+});
+
 // Serve HTML files
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));

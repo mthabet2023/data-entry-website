@@ -133,17 +133,29 @@ tr:hover {
     background-color: #f8f9fa;
 }
 
-.edit-btn {
-    background-color: #3498db;
-    color: white;
+.edit-btn, .delete-btn {
     border: none;
     padding: 6px 12px;
     border-radius: 4px;
     cursor: pointer;
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.edit-btn {
+    background-color: #3498db;
 }
 
 .edit-btn:hover {
     background-color: #2980b9;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+}
+
+.delete-btn:hover {
+    background-color: #c0392b;
 }
 
 .total-row {
