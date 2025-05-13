@@ -25,3 +25,4 @@ venv/
 *.log
 token.pickle
 dataentrywebsite-ceee3debb112.json
+*.json
