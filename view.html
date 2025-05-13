@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عرض المصروفات</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>عرض المصروفات</h1>
+            <nav>
+                <a href="index.html">إدخال البيانات</a>
+                <a href="view.html" class="active">عرض البيانات</a>
+            </nav>
+        </header>
+        
+        <main>
+            <div class="filter-section">
+                <div class="form-group">
+                    <label for="filterResponsible">عرض مصروفات:</label>
+                    <select id="filterResponsible">
+                        <option value="محمد ثابت">محمد ثابت</option>
+                        <option value="محمد شيخون">محمد شيخون</option>
+                    </select>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>التاريخ</th>
+                        <th>البيان</th>
+                        <th>القيمة</th>
+                        <th>تعديل</th>
+                    </tr>
+                </thead>
+                <tbody id="expensesTable">
+                    <!-- Data will be populated here via JavaScript -->
+                </tbody>
+                <tfoot>
+                    <tr class="total-row">
+                        <td colspan="2">المجموع</td>
+                        <td id="totalAmount">0</td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </main>
+    </div>
+
+    <!-- Edit Modal -->
+    <div id="editModal" style="display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 1000;">
+        <div style="background: white; max-width: 500px; margin: 50px auto; padding: 20px; border-radius: 10px;">
+            <h2 style="margin-bottom: 20px;">تعديل المصروف</h2>
+            <form id="editForm">
+                <input type="hidden" id="editRowIndex">
+                <div class="form-group">
+                    <label for="editDate">التاريخ:</label>
+                    <input type="date" id="editDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDescription">البيان:</label>
+                    <input type="text" id="editDescription" required>
+                </div>
+                <div class="form-group">
+                    <label for="editAmount">القيمة:</label>
+                    <input type="number" id="editAmount" required min="0" step="0.01">
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" style="flex: 1;">حفظ التعديلات</button>
+                    <button type="button" onclick="document.getElementById('editModal').style.display='none'" style="flex: 1; background-color: #e74c3c;">إلغاء</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="app.js"></script>
+</body>
+</html>
